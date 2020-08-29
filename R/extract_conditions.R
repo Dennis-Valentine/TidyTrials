@@ -31,7 +31,7 @@ extract_conditions <- function(trial_path){
 
   # Get housekeeping data
   #source(file = "R/Internal_housekeeping.R")
-  Housekeeping <- CTGov::Housekeeping
+  Housekeeping <- TidyTrials::Housekeeping
   house_keeping <- Housekeeping(trial_path)
 
   # Scope

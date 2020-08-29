@@ -29,7 +29,7 @@ extract_date <- function(trial_path){
 
   # Get housekeeping data
   #source(file = "R/Internal_housekeeping.R")
-  Housekeeping <- CTGov::Housekeeping
+  Housekeeping <- TidyTrials::Housekeeping
   house_keeping <- Housekeeping(trial_path)
 
 
@@ -66,11 +66,11 @@ extract_date <- function(trial_path){
   # Cleaning the date - all start dates will be floored and all end dates will
   # be ceiling'd
 
-  trial_start_df$start_date_clean <- floor_date(mdy(trial_start_df$start_date),
-                                             unit = "month")
+  trial_start_df$start_date_clean <- lubridate::floor_date(
+    lubridate::mdy(trial_start_df$start_date), unit = "month")
 
-  trial_end_df$completion_date_clean <- ceiling_date(mdy(trial_end_df$completion_date),
-                                          unit = "month")
+  trial_end_df$completion_date_clean <- lubridate::ceiling_date(
+    lubridate::mdy(trial_end_df$completion_date), unit = "month")
 
   trial_duration <- cbind(house_keeping, trial_start_df, trial_end_df)
   trial_duration$trial_duration <- trial_duration$completion_date_clean - trial_duration$start_date_clean

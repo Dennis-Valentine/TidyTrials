@@ -32,7 +32,7 @@ extract_outcome <- function(trial_path, primary_outcome = TRUE, secondary_outcom
 
   # Get housekeeping data
   #source(file = "R/Internal_housekeeping.R")
-  Housekeeping <- CTGov::Housekeeping
+  Housekeeping <- TidyTrials::Housekeeping
   house_keeping <- Housekeeping(trial_path)
 
 
@@ -69,7 +69,7 @@ extract_outcome <- function(trial_path, primary_outcome = TRUE, secondary_outcom
   }
 
 
-  all_outcomes <- bind_rows(primary_outcome_df, secondary_outcome_df)
+  all_outcomes <- dplyr::bind_rows(primary_outcome_df, secondary_outcome_df)
   all_outcomes <- cbind(house_keeping, all_outcomes)
   all_outcomes
 }

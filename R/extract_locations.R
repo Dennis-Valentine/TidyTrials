@@ -28,7 +28,7 @@ extract_locations <- function(trial_path){
   data_root <- xmlRoot(data)
 
   # Collect housekeeping data on the trial
-  source(file = "R/Internal_housekeeping.R")
+  Housekeeping <- TidyTrials::Housekeeping
   house_keeping <- Housekeeping(trial_path)
 
   # For some reason, location data ends up in 2 formats: a list or a matrix. I don't know why this happens

@@ -27,7 +27,7 @@ extract_eligibility <- function(trial_path){
   data_root <- xmlRoot(data)
 
   # Collecting housekeeping data
-  source(file = "R/Internal_housekeeping.R")
+  Housekeeping <- TidyTrials::Housekeeping
   house_keeping <- Housekeeping(trial_path)
 
   # Check to make sure the text block is present in the XML file.

@@ -1,5 +1,7 @@
 ---
 title: "TidyTrials"
+author: "Dennis Valentine"
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{TidyTrials}

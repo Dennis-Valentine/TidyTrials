@@ -1,12 +1,20 @@
 Package: TidyTrials
 Type: Package
-Title: This Package Is An XML Wrapper To Extract And Tidy Trials From ClinicalTrials.Gov.
+Title: This Package Is An XML Wrapper To Extract And Tidy Trials From ClinicalTrials.Gov
 Version: 0.1.0
 Author: Dennis Valentine
 Maintainer: Dennis Valentine <denden.emails@gmail.com>
 Description: This is the TidyTrials package. This package is essentially an XML wrapper to extract and tidy trials from ClinicalTrials.Gov. TidyTrials exists because clinical trials have a broad audience but the data is currently inaccessible to researchers who might be unfamiliar with parsing XML files (i.e. statisticians, geneticists and maybe some computational biologists).
-License: What license is it under?
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.0
-VignetteBuilder: knitr
+VignetteBuilder: 
+    knitr
+Suggests: 
+    testthat,
+    knitr
+Imports: 
+    XML,
+    dplyr, 
+    lubridate

@@ -13,13 +13,7 @@
 #'
 #' @export
 #'
-#' @examples
-#'
-#' ct_files <- list.files(path = "Benchmark_data/", pattern = "\\.xml", recursive = TRUE, full.names = TRUE)
-#' k <- lapply(X = ct_files, FUN = extract_outcome)
-#' k <- dplyr::bind_rows(k)
-#' View(k)
-#'
+
 extract_outcome <- function(trial_path, primary_outcome = TRUE, secondary_outcome = TRUE){
 
   # Check to see if the input is a XML file
@@ -27,8 +21,8 @@ extract_outcome <- function(trial_path, primary_outcome = TRUE, secondary_outcom
     stop("Path is not an XML file. File should start with 'NCT' and end with '.XML'")
   }
 
-  data <- xmlTreeParse(file = trial_path, useInternalNodes = TRUE)
-  data_root <- xmlRoot(data)
+  data <- XML::xmlTreeParse(file = trial_path, useInternalNodes = TRUE)
+  data_root <- XML::xmlRoot(data)
 
   # Get housekeeping data
   #source(file = "R/Internal_housekeeping.R")
@@ -43,8 +37,10 @@ extract_outcome <- function(trial_path, primary_outcome = TRUE, secondary_outcom
   # Working with the primary outcome
   if(primary_outcome == TRUE){
     tryCatch(expr = {
-                primary_outcome_present <- xpathSApply(doc = data_root, path = "//primary_outcome")
-                primary_outcome_df <- xmlToDataFrame(doc = primary_outcome_present, nodes = primary_outcome_present)
+                primary_outcome_present <- XML::xpathSApply(doc = data_root,
+                                                            path = "//primary_outcome")
+                primary_outcome_df <- XML::xmlToDataFrame(doc = primary_outcome_present,
+                                                          nodes = primary_outcome_present)
                 primary_outcome_df$Type = "Primary"
       },
              error = function(e){
@@ -57,8 +53,8 @@ extract_outcome <- function(trial_path, primary_outcome = TRUE, secondary_outcom
   # Working with the secondary outcome
   if(secondary_outcome == TRUE){
     tryCatch(expr = {
-      secondary_outcome_present <- xpathSApply(doc = data_root, path = "//secondary_outcome")
-      secondary_outcome_df <- xmlToDataFrame(doc = secondary_outcome_present, nodes = secondary_outcome_present)
+      secondary_outcome_present <- XML::xpathSApply(doc = data_root, path = "//secondary_outcome")
+      secondary_outcome_df <- XML::xmlToDataFrame(doc = secondary_outcome_present, nodes = secondary_outcome_present)
       secondary_outcome_df$Type = "Secondary"
     },
              error = function(e){

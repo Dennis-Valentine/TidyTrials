@@ -11,13 +11,6 @@
 #'
 #' @export
 #'
-#' @examples
-#'
-#' ct_files <- list.files(path = "Benchmark_data/", pattern = "\\.xml", recursive = TRUE, full.names = TRUE)
-#' k <- lapply(X = ct_files, FUN = extract_termination_reason)
-#' k <- dplyr::bind_rows(k)
-#' View(k)
-#'
 extract_termination_reason <- function(trial_path){
 
   # Check to see if the input is a XML file
@@ -25,8 +18,8 @@ extract_termination_reason <- function(trial_path){
     stop("Path is not an XML file. File should start with 'NCT' and end with '.XML'")
   }
 
-  data <- xmlTreeParse(file = trial_path, useInternalNodes = TRUE)
-  data_root <- xmlRoot(data)
+  data <- XML::xmlTreeParse(file = trial_path, useInternalNodes = TRUE)
+  data_root <- XML::xmlRoot(data)
 
   # Get housekeeping data
   #source(file = "R/Internal_housekeeping.R")
@@ -41,8 +34,8 @@ extract_termination_reason <- function(trial_path){
   if(house_keeping$Trial.Status == "Terminated"){ # If the trial is terminated
 
     tryCatch(expr = {
-      why_stopped_present <- xpathSApply(doc = data_root, path = "//why_stopped")
-      why_stopped_df <- xmlToDataFrame(doc = why_stopped_present, nodes = why_stopped_present)
+      why_stopped_present <- XML::xpathSApply(doc = data_root, path = "//why_stopped")
+      why_stopped_df <- XML::xmlToDataFrame(doc = why_stopped_present, nodes = why_stopped_present)
       names(why_stopped_df) <- "why_stopped"
 
     }, error = function(e){

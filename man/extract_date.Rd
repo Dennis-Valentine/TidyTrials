@@ -16,10 +16,3 @@ trial status, phase and title) with the start and end date of the trial.
 \description{
 Function to extract the start and end date of the trial.
 }
-\examples{
-ct_files <- list.files(path = "Benchmark_data/", pattern = "\\\\.xml", recursive = TRUE, full.names = TRUE)
-k <- lapply(X = ct_files, FUN = extract_date)
-k <- dplyr::bind_rows(k)
-View(k)
-
-}

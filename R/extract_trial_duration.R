@@ -9,13 +9,8 @@
 #' trial status, phase and title) with the start and end date of the trial.
 #'
 #' @export
-#'
-#' @examples
-#' ct_files <- list.files(path = "Benchmark_data/", pattern = "\\.xml", recursive = TRUE, full.names = TRUE)
-#' k <- lapply(X = ct_files, FUN = extract_date)
-#' k <- dplyr::bind_rows(k)
-#' View(k)
-#'
+#' @importFrom lubridate floor_date ceiling_date mdy
+
 
 extract_date <- function(trial_path){
 
@@ -24,8 +19,8 @@ extract_date <- function(trial_path){
     stop("Path is not an XML file. File should start with 'NCT' and end with '.XML'")
   }
 
-  data <- xmlTreeParse(file = trial_path, useInternalNodes = TRUE)
-  data_root <- xmlRoot(data)
+  data <- XML::xmlTreeParse(file = trial_path, useInternalNodes = TRUE)
+  data_root <- XML::xmlRoot(data)
 
   # Get housekeeping data
   #source(file = "R/Internal_housekeeping.R")
@@ -40,8 +35,8 @@ extract_date <- function(trial_path){
 
   # Extracting the trial start date
     tryCatch(expr = {
-      trial_duration <- xpathSApply(doc = data_root, path = "//start_date")
-      trial_start_df <- xmlToDataFrame(doc = trial_duration,
+      trial_duration <- XML::xpathSApply(doc = data_root, path = "//start_date")
+      trial_start_df <- XML::xmlToDataFrame(doc = trial_duration,
                                                   nodes = trial_duration)
       names(trial_start_df) <- "start_date"
       },
@@ -52,8 +47,8 @@ extract_date <- function(trial_path){
 
   # Extracting the trial end date
   tryCatch(expr = {
-    trial_duration <- xpathSApply(doc = data_root, path = "//completion_date")
-    trial_end_df <- xmlToDataFrame(doc = trial_duration,
+    trial_duration <- XML::xpathSApply(doc = data_root, path = "//completion_date")
+    trial_end_df <- XML::xmlToDataFrame(doc = trial_duration,
                                      nodes = trial_duration)
     names(trial_end_df) <- "completion_date"
   },

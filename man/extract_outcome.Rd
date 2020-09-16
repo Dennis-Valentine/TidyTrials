@@ -20,11 +20,3 @@ trial status, phase and title) with the primary and/or secondary outcome.
 \description{
 Function to extract the primary and secondary outcomes.
 }
-\examples{
-
-ct_files <- list.files(path = "Benchmark_data/", pattern = "\\\\.xml", recursive = TRUE, full.names = TRUE)
-k <- lapply(X = ct_files, FUN = extract_outcome)
-k <- dplyr::bind_rows(k)
-View(k)
-
-}

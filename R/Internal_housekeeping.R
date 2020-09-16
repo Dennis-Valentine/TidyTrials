@@ -16,18 +16,17 @@
 #' @export
 #'
 #' @import XML
+#' @import dplyr
 #'
 #' @examples
-#' ct_files <- list.files(path = "Benchmark_data/", pattern = "\\.xml", recursive = TRUE, full.names = TRUE)
-#' head(ct_files)
-#' k <- lapply(X = ct_files, FUN = Housekeeping)
-#' k <- dplyr::bind_rows(k)
-#' View(k)
+#' ct_files <- example_file <- system.file("extdat", "NCT00160147.xml", package = "TidyTrials")
+#' Housekeeping(ct_files)
+
 
 Housekeeping <- function(trial_path){
 
-  temp_xml_tree <- xmlTreeParse(file = trial_path, useInternalNodes = TRUE)
-  temp_xml_tree_rooted <- xmlRoot(temp_xml_tree)
+  temp_xml_tree <- XML::xmlTreeParse(file = trial_path, useInternalNodes = TRUE)
+  temp_xml_tree_rooted <- XML::xmlRoot(temp_xml_tree)
 
   # Scope
   results <- data.frame("NCT" = NA ,
@@ -36,16 +35,16 @@ Housekeeping <- function(trial_path){
                         "Brief Title" = NA  )
 
 
-  tryCatch(expr = {results[[1]] <- as.character(xpathApply(doc = temp_xml_tree, path = "//nct_id", xmlValue))},
+  tryCatch(expr = {results[[1]] <- as.character(XML::xpathApply(doc = temp_xml_tree, path = "//nct_id", xmlValue))},
            error = function(e){ })
 
-  tryCatch(expr = {results[[2]] <- as.character(xpathApply(doc = temp_xml_tree, path = "//overall_status", xmlValue))},
+  tryCatch(expr = {results[[2]] <- as.character(XML::xpathApply(doc = temp_xml_tree, path = "//overall_status", xmlValue))},
            error = function(e){ })
 
-  tryCatch(expr = {results[[3]] <- as.character(xpathSApply(doc = temp_xml_tree, path = "//phase", xmlValue))},
+  tryCatch(expr = {results[[3]] <- as.character(XML::xpathSApply(doc = temp_xml_tree, path = "//phase", xmlValue))},
            error = function(e){ })
 
-  tryCatch(expr = {results[[4]] <- xmlValue(temp_xml_tree_rooted[["brief_title"]])},
+  tryCatch(expr = {results[[4]] <- XML::xmlValue(temp_xml_tree_rooted[["brief_title"]])},
            error = function(e){ })
 
 

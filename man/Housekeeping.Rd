@@ -23,9 +23,6 @@ Collect basic metadata from a trial such as
 }
 }
 \examples{
-ct_files <- list.files(path = "Benchmark_data/", pattern = "\\\\.xml", recursive = TRUE, full.names = TRUE)
-head(ct_files)
-k <- lapply(X = ct_files, FUN = Housekeeping)
-k <- dplyr::bind_rows(k)
-View(k)
+ct_files <- example_file <- system.file("extdat", "NCT00160147.xml", package = "TidyTrials")
+Housekeeping(ct_files)
 }

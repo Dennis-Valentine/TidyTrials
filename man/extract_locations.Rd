@@ -7,19 +7,11 @@
 extract_locations(trial_path)
 }
 \arguments{
-\item{trial_path}{}
+\item{trial_path}{An absolute or relative path to the XML file}
 }
 \value{
 
 }
 \description{
 Extract the locations of the trials
-}
-\examples{
-
-ct_files <- list.files(path = "Benchmark_data/", pattern = "\\\\.xml", recursive = TRUE, full.names = TRUE)
-k <- lapply(X = ct_files, FUN = extract_locations)
-k <- dplyr::bind_rows(k)
-View(k)
-
 }

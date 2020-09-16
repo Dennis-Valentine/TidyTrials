@@ -10,13 +10,8 @@
 #'   the intervention and synonyms for the intervention.
 #'
 #' @export
-#'
-#' @examples
-#' ct_files <- list.files(path = "Benchmark_data/", pattern = "\\.xml", recursive = TRUE, full.names = TRUE)
-#' k <- lapply(X = ct_files, FUN = extract_interventions)
-#' k <- dplyr::bind_rows(k)
-#' View(k)
-#'
+
+
 extract_interventions <- function(trial_path){
 
   # Check to see if the input is a XML file
@@ -27,8 +22,8 @@ extract_interventions <- function(trial_path){
 
 
   # This is boiler plate code because Housekeeping() does this as well
-  data <- xmlTreeParse(file = trial_path, useInternalNodes = TRUE)
-  data_root <- xmlRoot(data)
+  data <- XML::xmlTreeParse(file = trial_path, useInternalNodes = TRUE)
+  data_root <- XML::xmlRoot(data)
 
   # Get housekeeping data
   #source(file = "R/Internal_housekeeping.R")
@@ -38,8 +33,8 @@ extract_interventions <- function(trial_path){
   # Intervention
   tryCatch(
     expr = {
-      intervention <- xpathApply(doc = data_root, path = ".//intervention", xmlToList)
-      intervention <- bind_rows(intervention)
+      intervention <- XML::xpathApply(doc = data_root, path = ".//intervention", xmlToList)
+      intervention <- dplyr::bind_rows(intervention)
     },
     error = function(e){ }
   )

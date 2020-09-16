@@ -18,10 +18,3 @@ Returns a tidy dataframe with the basic trial metadata (a trial's NCT
 Extract the MESH condtions assigned to the trials. CAUTION:  The MeSH terms
 are assigned with an imperfect algorithm.
 }
-\examples{
-ct_files <- list.files(path = "Benchmark_data/", pattern = "\\\\.xml", recursive = TRUE, full.names = TRUE)
-k <- lapply(X = ct_files, FUN = extract_conditions)
-k <- dplyr::bind_rows(k)
-View(k)
-
-}

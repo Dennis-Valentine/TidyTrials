@@ -16,11 +16,3 @@ trial status, phase and title) with the reasons why the trial stopped.
 \description{
 Extract the resons why a trial was terminated, if provided.
 }
-\examples{
-
-ct_files <- list.files(path = "Benchmark_data/", pattern = "\\\\.xml", recursive = TRUE, full.names = TRUE)
-k <- lapply(X = ct_files, FUN = extract_termination_reason)
-k <- dplyr::bind_rows(k)
-View(k)
-
-}

@@ -9,13 +9,7 @@
 #'   number, trial status, phase and title) with the MESH terms associated to
 #'   the trial.
 #' @export
-#'
-#' @examples
-#' ct_files <- list.files(path = "Benchmark_data/", pattern = "\\.xml", recursive = TRUE, full.names = TRUE)
-#' k <- lapply(X = ct_files, FUN = extract_conditions)
-#' k <- dplyr::bind_rows(k)
-#' View(k)
-#'
+
 extract_conditions <- function(trial_path){
 
   # Check to see if the input is a XML file
@@ -26,8 +20,8 @@ extract_conditions <- function(trial_path){
 
 
   # This is boiler plate code because Housekeeping() does this as well
-  data <- xmlTreeParse(file = trial_path, useInternalNodes = TRUE)
-  data_root <- xmlRoot(data)
+  data <- XML::xmlTreeParse(file = trial_path, useInternalNodes = TRUE)
+  data_root <- XML::xmlRoot(data)
 
   # Get housekeeping data
   #source(file = "R/Internal_housekeeping.R")
@@ -39,7 +33,9 @@ extract_conditions <- function(trial_path){
 
   # Conditions
   tryCatch(expr = {
-    conditions <- xpathSApply(doc = data_root, path = ".//condition_browse/mesh_term", xmlValue)
+    conditions <- XML::xpathSApply(doc = data_root,
+                                   path = ".//condition_browse/mesh_term",
+                                   xmlValue)
     conditions_df <- data.frame("Ontology" = "MeSH", "Conditions" = conditions)},
           error = function(e){  }
     )

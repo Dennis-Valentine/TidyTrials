@@ -17,11 +17,3 @@ Returns a tidy dataframe with the basic trial metadata (a trial's NCT
 \description{
 Function extraccts the eligibility criteria from the trials.
 }
-\examples{
-
-ct_files <- list.files(path = "Benchmark_data/", pattern = "\\\\.xml", recursive = TRUE, full.names = TRUE)
-k <- lapply(X = ct_files, FUN = extract_eligibility)
-k <- dplyr::bind_rows(k)
-View(k)
-
-}

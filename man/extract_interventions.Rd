@@ -18,10 +18,3 @@ Returns a tidy dataframe with the basic trial metadata (a trial's NCT
 \description{
 Function to extract the interventions used in the trials.
 }
-\examples{
-ct_files <- list.files(path = "Benchmark_data/", pattern = "\\\\.xml", recursive = TRUE, full.names = TRUE)
-k <- lapply(X = ct_files, FUN = extract_interventions)
-k <- dplyr::bind_rows(k)
-View(k)
-
-}

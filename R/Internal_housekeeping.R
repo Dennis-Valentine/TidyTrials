@@ -15,8 +15,10 @@
 #'
 #' @export
 #'
-#' @importFrom XML xmlTreeParse xmlRoot xpathApply xmlValue
-#'
+#' @importFrom XML xmlTreeParse xmlRoot xpathApply xmlValue xmlToDataFrame xmlToList
+#' @importFrom dplyr bind_rows coalesce
+#' @importFrom crayon cyan
+
 #' @examples
 #' ct_files <- example_file <- system.file("extdat", "NCT00160147.xml", package = "TidyTrials")
 #' Housekeeping(ct_files)
@@ -31,7 +33,7 @@ Housekeeping <- function(trial_path){
 
   # If the file is correct
   temp_xml_tree <- XML::xmlTreeParse(file = trial_path, useInternalNodes = TRUE)
-  temp_xml_tree_rooted <<- XML::xmlRoot(temp_xml_tree)
+  temp_xml_tree_rooted <- XML::xmlRoot(temp_xml_tree)
 
   # Save the results
   results <- data.frame("NCT" = NA ,

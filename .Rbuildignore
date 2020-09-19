@@ -1,5 +1,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+<<<<<<< Updated upstream
 ^\.travis\.yml$
 ^doc$
 ^Meta$
+=======
+>>>>>>> Stashed changes

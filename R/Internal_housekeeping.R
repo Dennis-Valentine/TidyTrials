@@ -15,8 +15,7 @@
 #'
 #' @export
 #'
-#' @import XML
-#' @import dplyr
+#' @importFrom XML xmlTreeParse xmlRoot xpathApply xmlValue
 #'
 #' @examples
 #' ct_files <- example_file <- system.file("extdat", "NCT00160147.xml", package = "TidyTrials")
@@ -25,36 +24,39 @@
 
 Housekeeping <- function(trial_path){
 
+  # Check to see if the input is a XML file
+  if(!grepl(pattern = "(NCT).*xml$", x = trial_path)){
+    stop(crayon::cyan("Path is not a ClinicalTrials.Gov XML file.\nFiles should start with 'NCT' and end with '.XML'"))
+  }
+
+  # If the file is correct
   temp_xml_tree <- XML::xmlTreeParse(file = trial_path, useInternalNodes = TRUE)
-  temp_xml_tree_rooted <- XML::xmlRoot(temp_xml_tree)
+  temp_xml_tree_rooted <<- XML::xmlRoot(temp_xml_tree)
 
-  # Scope
+  # Save the results
   results <- data.frame("NCT" = NA ,
-                        "Trial Status" = NA ,
+                        "Trial_Status" = NA ,
                         "Phase" = NA,
-                        "Brief Title" = NA  )
+                        "Brief_Title" = NA  )
 
+  # Nodes to extract
+  vars <- paste0("//", c("nct_id", "overall_status", "phase", "brief_title"))
 
-  tryCatch(expr = {results[[1]] <- as.character(XML::xpathApply(doc = temp_xml_tree, path = "//nct_id", xmlValue))},
-           error = function(e){ })
+  # One generic function to rule them all.
+  housekeeping_func <- function(x){
+    tryCatch(expr =
+               {results[[x]] <- as.character(
+                 XML::xpathApply(doc = temp_xml_tree,
+                                 path = vars[x],
+                                 XML::xmlValue)
+                 )},
+             error = function(e){ })
+    }
 
-  tryCatch(expr = {results[[2]] <- as.character(XML::xpathApply(doc = temp_xml_tree, path = "//overall_status", xmlValue))},
-           error = function(e){ })
-
-  tryCatch(expr = {results[[3]] <- as.character(XML::xpathSApply(doc = temp_xml_tree, path = "//phase", xmlValue))},
-           error = function(e){ })
-
-  tryCatch(expr = {results[[4]] <- XML::xmlValue(temp_xml_tree_rooted[["brief_title"]])},
-           error = function(e){ })
-
-
-  # trial_id_temp <- as.data.frame(xpathApply(doc = temp_xml_tree, path = "//nct_id", xmlValue))
-  # trial_status <- as.data.frame(xpathApply(doc = temp_xml_tree, path = "//overall_status", xmlValue))
-  # phase <- as.data.frame(xpathSApply(doc = temp_xml_tree, path = "//phase", xmlValue))
-  # brief_title <- xmlValue(temp_xml_tree_rooted[["brief_title"]])
-
-  #colnames(results) <- c("NCT", "Trial_Status", "Phase", "Brief_Title")
-
+  results[[1]] <- housekeeping_func(1)
+  results[[2]] <- housekeeping_func(2)
+  results[[3]] <- housekeeping_func(3)
+  results[[4]] <- housekeeping_func(4)
 
   return(results)
 

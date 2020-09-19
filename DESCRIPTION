@@ -18,3 +18,5 @@ Imports:
     XML,
     dplyr, 
     lubridate
+Depends: 
+    R (>= 2.10)

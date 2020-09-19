@@ -3,8 +3,7 @@
 #' Function to extract the primary and secondary outcomes.
 #'
 #' @param trial_path An absolute or relative path to the XML file
-#' @param primary_outcome Logical. If TRUE the primary outcome is extracted.
-#' @param secondary_outcome Logical. If TRUE the secondary outcome is extracted.
+#' @param outcome A character string with the outcome type (primary or secondary) that should be extracted. Default extracts both.
 #'
 #' @return
 #'
@@ -14,20 +13,13 @@
 #' @export
 #'
 
-extract_outcome <- function(trial_path, primary_outcome = TRUE, secondary_outcome = TRUE){
-
-  # Check to see if the input is a XML file
-  if(!grepl(pattern = "NCT.*xml$", x = trial_path)){
-    stop("Path is not an XML file. File should start with 'NCT' and end with '.XML'")
-  }
+extract_outcome <- function(trial_path, outcome = c("primary", "secondary")){
 
   data <- XML::xmlTreeParse(file = trial_path, useInternalNodes = TRUE)
   data_root <- XML::xmlRoot(data)
 
   # Get housekeeping data
-  #source(file = "R/Internal_housekeeping.R")
-  Housekeeping <- TidyTrials::Housekeeping
-  house_keeping <- Housekeeping(trial_path)
+  house_keeping <- TidyTrials::Housekeeping(trial_path)
 
 
   # Scope
@@ -35,7 +27,7 @@ extract_outcome <- function(trial_path, primary_outcome = TRUE, secondary_outcom
   secondary_outcome_df <- data.frame()
 
   # Working with the primary outcome
-  if(primary_outcome == TRUE){
+  if("primary" %in% outcome){
     tryCatch(expr = {
                 primary_outcome_present <- XML::xpathSApply(doc = data_root,
                                                             path = "//primary_outcome")
@@ -44,21 +36,21 @@ extract_outcome <- function(trial_path, primary_outcome = TRUE, secondary_outcom
                 primary_outcome_df$Type = "Primary"
       },
              error = function(e){
-               message("Primary Outcome is missing from XML file. They might not have provided it.")
+               message(crayon::cyan("Primary Outcome is missing from XML file. They might not have provided it."))
                primary_outcome_df <<- data.frame("Type" = "Primary")
              })
     }
 
 
   # Working with the secondary outcome
-  if(secondary_outcome == TRUE){
+  if("secondary" %in% outcome){
     tryCatch(expr = {
       secondary_outcome_present <- XML::xpathSApply(doc = data_root, path = "//secondary_outcome")
       secondary_outcome_df <- XML::xmlToDataFrame(doc = secondary_outcome_present, nodes = secondary_outcome_present)
       secondary_outcome_df$Type = "Secondary"
     },
              error = function(e){
-               message("Secondary Outcome is missing from XML file. They might not have provided it.")
+               message(crayon::cyan("Secondary Outcome is missing from XML file. They might not have provided it."))
                secondary_outcome_df <<- data.frame("Type" = "Secondary")
 
              })
@@ -69,3 +61,4 @@ extract_outcome <- function(trial_path, primary_outcome = TRUE, secondary_outcom
   all_outcomes <- cbind(house_keeping, all_outcomes)
   all_outcomes
 }
+

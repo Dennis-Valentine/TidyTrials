@@ -4,14 +4,12 @@
 \alias{extract_outcome}
 \title{Extract Outcomes}
 \usage{
-extract_outcome(trial_path, primary_outcome = TRUE, secondary_outcome = TRUE)
+extract_outcome(trial_path, outcome = c("primary", "secondary"))
 }
 \arguments{
 \item{trial_path}{An absolute or relative path to the XML file}
 
-\item{primary_outcome}{Logical. If TRUE the primary outcome is extracted.}
-
-\item{secondary_outcome}{Logical. If TRUE the secondary outcome is extracted.}
+\item{outcome}{A character string with the outcome type (primary or secondary) that should be extracted. Default extracts both.}
 }
 \value{
 Returns a tidy dataframe with the basic trial metadata (a trial's NCT number,

@@ -21,7 +21,7 @@ test_that(desc = "internal_houskeeping checks the files are XML", code = {
 
 test_that("internal_housekeeping extracts the NCT, trial status, phase and brief title as a data frame", {
   example_file <- system.file("extdat", "NCT00160147.xml", package = "TidyTrials")
-  expect_identical(Housekeeping(example_file), object = TidyTrials::test_NCT00160147_xml)
+  expect_identical(Housekeeping(example_file), object = TidyTrials:::test_NCT00160147_xml)
 
 })
 

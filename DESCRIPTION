@@ -17,6 +17,7 @@ Suggests:
 Imports: 
     XML,
     dplyr, 
-    lubridate
+    lubridate,
+    crayon
 Depends: 
     R (>= 2.10)

@@ -1,0 +1,3 @@
+example_file <- system.file("extdat", "NCT00160147.xml", package = "TidyTrials")
+extract_date(example_file)
+trial_duration$trial_duration <- trial_duration$completion_date_clean - trial_duration$start_date_clean
